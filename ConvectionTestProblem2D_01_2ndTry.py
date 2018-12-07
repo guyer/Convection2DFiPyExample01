@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.interpolate
 
-from oct2py import octave
+# from oct2py import octave
 
 #head
 def get_solution_along_ray(soln,R_inner,R_outer,cellSize,rayAngle,N_pointsAlongRay):
@@ -98,7 +98,7 @@ eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + ImplicitSourceTerm(RobinCo
 # sys.exit()
 
 #either show the fipy viewer or make a T(s,t) plot; doing both at once is too much of a hassle to debug
-showViewer=False  #SETTING
+showViewer=True  #SETTING
 if showViewer:
     #viewer=Viewer(vars=var,datamin=T_infinity,datamax=T_initial)
     viewer=Viewer(vars=var)
@@ -124,7 +124,7 @@ del val
 N_plots_desired=7  #SETTING
 plotEvery=steps/N_plots_desired  #SETTING
 
-showAnalytical=True
+showAnalytical=False
 
 N_pointsAlongRay=10  #SETTING
 rayAngle=np.pi/4.  #SETTING
