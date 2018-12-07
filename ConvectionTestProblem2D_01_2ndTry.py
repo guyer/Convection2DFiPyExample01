@@ -87,12 +87,9 @@ mask=surfaceFaces
 Gamma.setValue(0., where=mask)
 dPf = FaceVariable(mesh=mesh, value=mesh._faceToCellDistanceRatio * mesh.cellDistanceVectors)
 Af = FaceVariable(mesh=mesh, value=mesh._faceAreas)
-#RobinCoeff = (mask * Gamma0 * Af / (dPf.dot(a) + b)).divergence  #a is zero in our case
-b=1.
-RobinCoeff = (mask * Gamma0 * Af / b).divergence  #a is zero in our case
-#eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + RobinCoeff * g - ImplicitSourceTerm(coeff=RobinCoeff * mesh.faceNormals.dot(a)))   #a is zero in our case
+RobinCoeff = (mask * Gamma0 * Af * mesh.faceNormals / (convectionCoeff * dPf.dot(mesh.faceNormals) + k)).divergence
 # g in this formulation is -convectionCoeff/k*var, where var=T-T_infinity
-eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + ImplicitSourceTerm(RobinCoeff * -convectionCoeff/k))
+eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + ImplicitSourceTerm(RobinCoeff * convectionCoeff))
 
 # embed()
 # sys.exit()
