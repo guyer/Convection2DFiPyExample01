@@ -95,7 +95,7 @@ eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + ImplicitSourceTerm(RobinCo
 # sys.exit()
 
 #either show the fipy viewer or make a T(s,t) plot; doing both at once is too much of a hassle to debug
-showViewer=True  #SETTING
+showViewer=False  #SETTING
 if showViewer:
     #viewer=Viewer(vars=var,datamin=T_infinity,datamax=T_initial)
     viewer=Viewer(vars=var)
@@ -138,6 +138,7 @@ if not showViewer:
     #plot the initial condition
     s_ray,var_ray=get_solution_along_ray(soln=var,R_inner=R_inner,R_outer=R_outer,cellSize=cellSize,rayAngle=rayAngle,N_pointsAlongRay=N_pointsAlongRay)
     ax.plot(s_ray,var_ray+T_infinity,'k.')
+    plt.pause(1e-17)
 
 A=15  #SETTING for analytical solution
 
@@ -155,6 +156,7 @@ for step in range(steps):
         else:
             s_ray,var_ray=get_solution_along_ray(soln=var,R_inner=R_inner,R_outer=R_outer,cellSize=cellSize,rayAngle=rayAngle,N_pointsAlongRay=N_pointsAlongRay)
             ax.plot(s_ray,var_ray+T_infinity,'k.')
+            plt.pause(1e-17)
 
             print 'step is %d; min T along ray is %.2E, max T along ray is %.2E' % (step,var_ray.min()+T_infinity,var_ray.max()+T_infinity)
 
