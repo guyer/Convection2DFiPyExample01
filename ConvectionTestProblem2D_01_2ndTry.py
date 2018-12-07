@@ -95,7 +95,7 @@ eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + ImplicitSourceTerm(RobinCo
 # sys.exit()
 
 #either show the fipy viewer or make a T(s,t) plot; doing both at once is too much of a hassle to debug
-showViewer=False  #SETTING
+showViewer=True  #SETTING
 if showViewer:
     #viewer=Viewer(vars=var,datamin=T_infinity,datamax=T_initial)
     viewer=Viewer(vars=var)
