@@ -95,16 +95,15 @@ Gamma = FaceVariable(mesh=mesh, value=Gamma0)
 mask=surfaceFaces
 Gamma.setValue(0., where=mask)
 dPf = FaceVariable(mesh=mesh, value=mesh._faceToCellDistanceRatio * mesh.cellDistanceVectors)
-Af = FaceVariable(mesh=mesh, value=mesh._faceAreas)
 b=k
 #RobinCoeff = (mask * Gamma0 * Af * mesh.faceNormals / (-dPf.dot(a) + b)).divergence  #I changed a sign in the denominator since I suspect a sign error
 #a is convectionCoeff times n_hat
 #20181211: I am getting same result whichever sign in the denominator I go with; solution is stuck at initial condition
-RobinCoeff = (mask * Gamma0 * Af * mesh.faceNormals / (-convectionCoeff * dPf.dot(mesh.faceNormals) + b)).divergence  #I changed a sign in the denominator since I suspect a sign error
+RobinCoeff = (mask * Gamma0 * mesh.faceNormals / (-convectionCoeff * dPf.dot(mesh.faceNormals) + b))  #I changed a sign in the denominator since I suspect a sign error
 g=convectionCoeff*T_infinity
 #eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + RobinCoeff * g - ImplicitSourceTerm(coeff=RobinCoeff * mesh.faceNormals.dot(a)))
 #a is convectionCoeff times n_hat
-eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + RobinCoeff * g - ImplicitSourceTerm(coeff=RobinCoeff * convectionCoeff))
+eq = (TransientTerm() == DiffusionTerm(coeff=Gamma) + (RobinCoeff * g).divergence - ImplicitSourceTerm(coeff=(RobinCoeff * convectionCoeff).divergence))
 
 # embed()
 # sys.exit()
